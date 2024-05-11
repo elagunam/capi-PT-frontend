@@ -48,39 +48,24 @@
                           {{contact.fullname}}
                         </td>
                         <td>
-                          
+
                         </td>
                       </tr>
                     }
                   }
                 </tbody>
-                
-                
-                <!-- <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                  </tr>
-                </tbody> -->
               </table>
         </div>
     </div>
     <div class="row">
-      <div class="col-md-12">
-
+      <div class="col-md-12 text-center">
+        <span>Página {{currentPage}} de {{lastPage}}</span>
+        <nav aria-label="Page navigation example" class="text-center m-auto">
+          <div class="btn-group col-md-12">
+            <button [disabled]="this.currentPage <= 1" class="btn btn-outline-primary col-md-6" (click)="prevPage()">Anterior</button>
+            <button [disabled]="this.currentPage >= this.lastPage" class="btn btn-outline-primary col-md-6" (click)="nextPage()">Siguiente</button>
+          </div>
+        </nav>
       </div>
     </div>
 </div>

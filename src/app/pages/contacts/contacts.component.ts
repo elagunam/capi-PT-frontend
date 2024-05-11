@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ContactService } from '../../services/contact.service';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
+import { RouterLink } from '@angular/router';
 
 interface Contact {
   id:         number;
@@ -15,7 +16,7 @@ interface Contact {
 @Component({
   selector: 'app-contacts',
   standalone: true,
-  imports: [MatSelectModule, MatInputModule],
+  imports: [MatSelectModule, MatInputModule, RouterLink],
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.scss'
 })
@@ -64,10 +65,25 @@ export class ContactsComponent implements OnInit {
     this.loadContacts();
   }
 
-  // onPageSizeChange(newSize: number) {
-  //   this.pageSize = newSize;
-  //   this.loadContacts();
-  // }
+  prevPage(){
+    //SI LA PAGINA ES LA PRIMERA, NO PODEMOS IR ATRAS
+    if(this.currentPage <= 1){
+      return;
+    }
+
+    this.currentPage --;
+    this.loadContacts();
+  }
+
+  nextPage(){
+    //SI LA PAGINA ES LA ULTIMA PAGINA, NO PODEMOS IR A LA SIGUIENTE
+    if(this.currentPage >= this.lastPage){
+      return;
+    }
+
+    this.currentPage ++;
+    this.loadContacts();
+  }
 
 
 
