@@ -14,10 +14,17 @@
             <mat-hint>Ingrese un nombre</mat-hint>
           </mat-form-field>
         </div>
+        <div class="col-md-4">
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" placeholder="Email">
+            <mat-hint>Ingrese un Email</mat-hint>
+          </mat-form-field>
+        </div>
       </div>
       <div class="row mt-4">
         <div class="col-md-4 float-end">
-          <button type="submit" mat-flat-button color="primary">Buscar</button>
+          <button type="submit" mat-flat-button [disabled]="filtersForm.invalid" color="primary">Buscar</button>
         </div>
       </div>
     </form>

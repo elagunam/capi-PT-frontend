@@ -3,7 +3,7 @@ import { ContactService } from '../../services/contact.service';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 
 interface Contact {
@@ -44,8 +44,7 @@ export class ContactsComponent implements OnInit {
 
   filtersForm: FormGroup = this.fb.group({
     fullname: [null],
-    // email: ['', [Validators.required, Validators.email]],
-    // password: ['', [Validators.required]]
+    email: [null, [Validators.email]]
   });
 
   
