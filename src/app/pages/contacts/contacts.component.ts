@@ -4,6 +4,9 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { ContactComponent } from '../../components/contact/contact.component';
+
 
 
 interface Contact {
@@ -23,7 +26,8 @@ interface Contact {
     FormsModule,
     MatSelectModule, 
     MatInputModule, 
-    MatButtonModule, 
+    MatButtonModule,
+    MatDialogModule,
   ],
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.scss'
@@ -31,6 +35,7 @@ interface Contact {
 export class ContactsComponent implements OnInit {
 
   contactService = inject(ContactService);
+  public dialog = inject(MatDialog);
 
   contacts: Contact[] = [];
 
@@ -108,6 +113,31 @@ export class ContactsComponent implements OnInit {
     this.filters = this.filtersForm.value;
     this.currentPage = 1;
     this.loadContacts();
+  }
+
+  //FACADES PARA CREAR O EDITAR UN CONTACTO
+  edit(id: number){
+    this.open(id);
+  }
+
+  create(){
+    this.open();
+  }
+
+  //ABRIR EMERGENTE DE CONTACTO
+  open(id: number = 0): void {
+    const contactDialogRef = this.dialog.open(ContactComponent, {
+      panelClass: ['col-md-12'],
+      data: {
+        id: id
+      }
+    });
+
+    contactDialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.loadContacts();
+      }
+    });
   }
 
 
