@@ -2,7 +2,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ContactService } from '../../services/contact.service';
 import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
-import { RouterLink } from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 interface Contact {
   id:         number;
@@ -16,7 +18,13 @@ interface Contact {
 @Component({
   selector: 'app-contacts',
   standalone: true,
-  imports: [MatSelectModule, MatInputModule, RouterLink],
+  imports: [
+    ReactiveFormsModule, 
+    FormsModule,
+    MatSelectModule, 
+    MatInputModule, 
+    MatButtonModule, 
+  ],
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.scss'
 })
@@ -31,6 +39,14 @@ export class ContactsComponent implements OnInit {
 
   pageSize: number = 10;
   filters: any = {};
+
+  private fb = inject(FormBuilder);
+
+  filtersForm: FormGroup = this.fb.group({
+    fullname: [null],
+    // email: ['', [Validators.required, Validators.email]],
+    // password: ['', [Validators.required]]
+  });
 
   
   tableState = {
@@ -82,6 +98,14 @@ export class ContactsComponent implements OnInit {
     }
 
     this.currentPage ++;
+    this.loadContacts();
+  }
+
+
+  filter(){
+    console.log(this.filtersForm.value);
+    this.filters = this.filtersForm.value;
+    this.currentPage = 1;
     this.loadContacts();
   }
 

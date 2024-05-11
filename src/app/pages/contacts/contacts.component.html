@@ -1,4 +1,29 @@
 <div class="container pt-4">
+  <div>
+    <form #filteringForm="ngForm" [formGroup]="filtersForm" (ngSubmit)="filter()">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Filtros</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <mat-form-field appearance="fill">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="fullname" placeholder="Nombre">
+            <mat-hint>Ingrese un nombre</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-4 float-end">
+          <button type="submit" mat-flat-button color="primary">Buscar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+    
+    <hr>
     <div class="row ">
       <div class="col-md-4">
         <mat-form-field>
