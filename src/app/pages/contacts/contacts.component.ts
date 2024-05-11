@@ -44,7 +44,9 @@ export class ContactsComponent implements OnInit {
 
   filtersForm: FormGroup = this.fb.group({
     fullname: [null],
-    email: [null, [Validators.email]]
+    email: [null, [Validators.email]],
+    phone_number: [null, [Validators.pattern('[- +()0-9]+')]],
+    city: [null],
   });
 
   

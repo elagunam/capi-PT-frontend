@@ -7,21 +7,36 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
           <mat-form-field appearance="fill">
             <mat-label>Nombre</mat-label>
             <input matInput formControlName="fullname" placeholder="Nombre">
             <mat-hint>Ingrese un nombre</mat-hint>
           </mat-form-field>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <mat-form-field appearance="fill">
             <mat-label>Email</mat-label>
             <input matInput formControlName="email" placeholder="Email">
             <mat-hint>Ingrese un Email</mat-hint>
           </mat-form-field>
         </div>
+        <div class="col-md-6">
+          <mat-form-field appearance="fill">
+            <mat-label>Teléfono</mat-label>
+            <input matInput maxlength="10" formControlName="phone_number" placeholder="Teléfono">
+            <mat-hint>Ingrese un Teléfono</mat-hint>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6">
+          <mat-form-field appearance="fill">
+            <mat-label>Ciudad</mat-label>
+            <input matInput formControlName="city" placeholder="Ciudad">
+            <mat-hint>Ingrese una Ciudad</mat-hint>
+          </mat-form-field>
+        </div>
       </div>
+      
       <div class="row mt-4">
         <div class="col-md-4 float-end">
           <button type="submit" mat-flat-button [disabled]="filtersForm.invalid" color="primary">Buscar</button>
