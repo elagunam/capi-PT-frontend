@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -12,11 +12,15 @@ export class ContactService {
     private http: HttpClient
   ) { }
 
-  getContacts(): Observable<any>{
-    return this.http.get(environment.api_url+'contacts');
-  }
+  getContacts(page: number = 1, pageSize: number = 10, filters: any = {}): Observable<any>{
+    let params = new HttpParams().set('page', page).set('pageSize', pageSize);
 
-  // activateUser(code:any): Observable<any> {
-  //   return this.http.get(environment.core_url + 'auth/activate/'+code);
-  // }
+    //Agregar filtros adicionales en caso de existir, para paginar con filtros activos
+    Object.keys(filters).forEach(key => {
+      if(filters[key]){
+        params = params.set(key, filters[key]);
+      }
+    });
+    return this.http.get(environment.api_url+'contacts', {params});
+  }
 }
