@@ -20,4 +20,8 @@ export class AddressService {
   getOneById(id: number): Observable<any>{
     return this.http.get(environment.api_url+'address/'+id);
   }
+
+  delete(id: number): Observable<any>{
+    return this.http.delete(environment.api_url + 'address/'+id);
+  }
 }

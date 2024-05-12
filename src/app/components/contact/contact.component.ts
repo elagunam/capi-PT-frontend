@@ -7,9 +7,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
-import { Contact } from '../../interfaces/global.interface';
+import { Address, Contact } from '../../interfaces/global.interface';
 import { AddressComponent } from '../address/address.component';
 import { MatIconModule } from '@angular/material/icon';
+import { ConfirmComponent } from '../confirm/confirm.component';
+import { AddressService } from '../../services/address.service';
 
 
 
@@ -36,6 +38,7 @@ export class ContactComponent implements OnInit{
   dialog = inject(MatDialog);
   contactService = inject(ContactService);
   appService = inject(AppService);
+  addressService = inject(AddressService);
   fb = inject(FormBuilder);
   dialogRef = inject(MatDialogRef<ContactComponent>);
   data: DialogData = inject(MAT_DIALOG_DATA);
@@ -146,5 +149,47 @@ export class ContactComponent implements OnInit{
         }
       }
     });
+  }
+
+
+  deleteAddressConfirm(address: Address){
+
+    const contactDialogRef = this.dialog.open(ConfirmComponent, {
+      panelClass: ['col-md-12'],
+      data: {
+        title: 'Borrar dirección de contacto',
+        text: `¿Desea borrar la dirección ${address.address}, de la ciudad ${address.city}?`,
+        confirm: 'Eliminar',
+        cancel: 'Cancelar',
+      }
+    });
+
+    contactDialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.deleteAddress(address.id);
+      }
+    });
+  }
+
+
+  deleteAddress(id: number){
+    this.addressService.delete(id).subscribe({
+      next: (response) => {
+        if(response.status){
+          this.appService.openToast(response.message, 'Cerrar');
+          if(this.contact){
+            this.contact.addresses = response.addresses;
+          }
+        }else{
+          this.appService.openAlert('Atención', 'text-danger', response.message, 'Cerrar', 'text-danger', 'btn-danger text-light');
+        }
+      },
+      error: (error) => {
+        console.log(error);
+        this.appService.openAlert('Error', 'text-danger', 'No se pudo procesar su petición en este momento, intente más tarde', 'Cerrar', 'text-danger', 'btn-danger text-light');
+      }
+    });
+    
+
   }
 }
