@@ -21,6 +21,7 @@ import { EmailService } from '../../services/email.service';
 
 export interface DialogData {
   id: number;
+  readonly: boolean;
 }
 @Component({
   selector: 'app-contact',
@@ -106,6 +107,9 @@ export class ContactComponent implements OnInit{
             this.form.get('fullname')?.setValue(contact.fullname);
             this.form.enable();
             this.formState.isLoading = false;
+            if(this.data.readonly){
+              this.form.disable();
+            }
           }else{
             this.appService.openAlert('Error', 'text-danger', response.message, 'Cerrar', 'text-danger', 'btn-danger text-light');
             this.form.enable();

@@ -127,12 +127,17 @@ export class ContactsComponent implements OnInit {
     this.open();
   }
 
+  view(id: number){
+    this.open(id, true);
+  }
+
   //ABRIR EMERGENTE DE CONTACTO
-  open(id: number = 0): void {
+  open(id: number = 0, readonly:boolean=false): void {
     const contactDialogRef = this.dialog.open(ContactComponent, {
       panelClass: ['col-md-12'],
       data: {
-        id: id
+        id: id,
+        readonly
       }
     });
 

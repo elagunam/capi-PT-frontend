@@ -1,4 +1,4 @@
-<h2 class="text-primary fw-bold fs-4" mat-dialog-title>{{data.id ? 'Editar contacto' : 'Crear contacto'}}</h2>
+<h2 class="text-primary fw-bold fs-4" mat-dialog-title>{{data.id ? !data.readonly ? 'Editar contacto' : 'Detalle del contacto' : 'Crear contacto'}}</h2>
 <form #contForm="ngForm" [formGroup]="form" (ngSubmit)="save()">
     <mat-dialog-content>
         <div class="row mt-2">
@@ -15,11 +15,13 @@
                 <div class="col-md-12">
                     <mat-tab-group>
                         <mat-tab label="Direcciones">
-                            <div class="row mt-3">
-                                <div class="col-md-4 offset-md-8">
-                                    <button mat-flat-button class="w-100" type="button" (click)="createAddress()" color="primary">Agregar dirección</button>
+                            @if(!data.readonly){
+                                <div class="row mt-3">
+                                    <div class="col-md-4 offset-md-8">
+                                        <button mat-flat-button class="w-100" type="button" (click)="createAddress()" color="primary">Agregar dirección</button>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                             <div class="row mt-3">
                                 <div class="col-md-12 table-responsive">
                                     <table class="table table-striped table-bordered table-hover">
@@ -29,7 +31,9 @@
                                               <th scope="col">Ciudad</th>
                                               <th scope="col">País</th>
                                               <th scope="col">Código postal</th>
-                                              <th scope="col">Opciones</th>
+                                              @if(!data.readonly){
+                                                  <th scope="col">Opciones</th>
+                                              }
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -48,19 +52,22 @@
                                                         <td>
                                                             {{address.zip}}
                                                         </td>
-                                                        <td>
-                                                            <button type="button" mat-icon-button color="primary" (click)="editAddress(address.id)">
-                                                                <mat-icon>edit</mat-icon>
-                                                            </button>
-                                                            <button type="button" mat-icon-button color="warn" (click)="deleteAddressConfirm(address)">
-                                                                <mat-icon>delete</mat-icon>
-                                                            </button>
-                                                        </td>
+                                                        @if(!data.readonly){
+                                                            <td>
+                                                                <button type="button" mat-icon-button color="primary" (click)="editAddress(address.id)">
+                                                                    <mat-icon>edit</mat-icon>
+                                                                </button>
+                                                                <button type="button" mat-icon-button color="warn" (click)="deleteAddressConfirm(address)">
+                                                                    <mat-icon>delete</mat-icon>
+                                                                </button>
+                                                            </td>
+                                                        }
+                                                        
                                                     </tr>
                                                 }
                                             }@else {
                                                 <tr>
-                                                    <td colspan="5">
+                                                    <td [attr.colspan]="!data.readonly ? 5:4">
                                                         No hay direcciones agregadas
                                                     </td>
                                                 </tr>
@@ -73,11 +80,13 @@
                             </div>
                         </mat-tab>
                         <mat-tab label="Teléfonos">
-                            <div class="row mt-3">
-                                <div class="col-md-4 offset-md-8">
-                                    <button mat-flat-button class="w-100" type="button" (click)="createPhone()" color="primary">Agregar teléfono</button>
+                            @if(!data.readonly){
+                                <div class="row mt-3">
+                                    <div class="col-md-4 offset-md-8">
+                                        <button mat-flat-button class="w-100" type="button" (click)="createPhone()" color="primary">Agregar teléfono</button>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                             <div class="row mt-3">
                                 <div class="col-md-12 table-responsive">
                                     <table class="table table-striped table-bordered table-hover">
@@ -85,7 +94,10 @@
                                             <tr class="table-primary">
                                               <th scope="col">Teléfono</th>
                                               <th scope="col">Tipo</th>
-                                              <th scope="col">Opciones</th>
+                                              @if(!data.readonly){
+                                                <th scope="col">Opciones</th>
+                                              }
+                                              
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -108,19 +120,22 @@
                                                                 }
                                                             }
                                                         </td>
-                                                        <td>
-                                                            <button type="button" mat-icon-button color="primary" (click)="editPhone(phone.id)">
-                                                                <mat-icon>edit</mat-icon>
-                                                            </button>
-                                                            <button type="button" mat-icon-button color="warn" (click)="deletePhoneConfirm(phone)">
-                                                                <mat-icon>delete</mat-icon>
-                                                            </button>
-                                                        </td>
+                                                        @if(!data.readonly){
+                                                            <td>
+                                                                <button type="button" mat-icon-button color="primary" (click)="editPhone(phone.id)">
+                                                                    <mat-icon>edit</mat-icon>
+                                                                </button>
+                                                                <button type="button" mat-icon-button color="warn" (click)="deletePhoneConfirm(phone)">
+                                                                    <mat-icon>delete</mat-icon>
+                                                                </button>
+                                                            </td>
+                                                        }
+                                                        
                                                     </tr>
                                                 }
                                             }@else {
                                                 <tr>
-                                                    <td colspan="5">
+                                                    <td [attr.colspan]="!data.readonly ? 3: 2">
                                                         No hay teléfonos agregados
                                                     </td>
                                                 </tr>
@@ -134,18 +149,22 @@
                             
                         </mat-tab>
                         <mat-tab label="Emails">
-                            <div class="row mt-3">
-                                <div class="col-md-4 offset-md-8">
-                                    <button mat-flat-button class="w-100" type="button" (click)="createEmail()" color="primary">Agregar email</button>
+                            @if(!data.readonly){
+                                <div class="row mt-3">
+                                    <div class="col-md-4 offset-md-8">
+                                        <button mat-flat-button class="w-100" type="button" (click)="createEmail()" color="primary">Agregar email</button>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                             <div class="row mt-3">
                                 <div class="col-md-12 table-responsive">
                                     <table class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr class="table-primary">
                                               <th scope="col">Email</th>
-                                              <th scope="col">Opciones</th>
+                                              @if(!data.readonly){
+                                                  <th scope="col">Opciones</th>
+                                              }
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -155,19 +174,22 @@
                                                         <td>
                                                             {{email.email}}
                                                         </td>
-                                                        <td>
-                                                            <button type="button" mat-icon-button color="primary" (click)="editEmail(email.id)">
-                                                                <mat-icon>edit</mat-icon>
-                                                            </button>
-                                                            <button type="button" mat-icon-button color="warn" (click)="deleteEmailConfirm(email)">
-                                                                <mat-icon>delete</mat-icon>
-                                                            </button>
-                                                        </td>
+                                                        @if(!data.readonly){
+                                                            <td>
+                                                                <button type="button" mat-icon-button color="primary" (click)="editEmail(email.id)">
+                                                                    <mat-icon>edit</mat-icon>
+                                                                </button>
+                                                                <button type="button" mat-icon-button color="warn" (click)="deleteEmailConfirm(email)">
+                                                                    <mat-icon>delete</mat-icon>
+                                                                </button>
+                                                            </td>
+                                                        }
+                                                        
                                                     </tr>
                                                 }
                                             }@else {
                                                 <tr>
-                                                    <td colspan="5">
+                                                    <td [attr.colspan]="data.readonly ? 1 : 2">
                                                         No hay emails agregados
                                                     </td>
                                                 </tr>
@@ -179,25 +201,6 @@
                             </div>
 
                         </mat-tab>
-                        <!-- <mat-tab label="Emails">
-                            
-                            <div class="row mt-3">
-                                <div class="col-md-12 table-responsive">
-                                    <table class="table table-striped table-bordered table-hover">
-                                        <thead>
-                                            <tr class="table-primary">
-                                              <th scope="col">Email</th>
-                                              <th scope="col">Opciones</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            
-                                            
-                                          </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </mat-tab> -->
                       </mat-tab-group>
                 </div>
             </div>
@@ -207,15 +210,28 @@
     <mat-dialog-actions class="mat-dialog-actions">
         <div class="row w-100">
           <div class="col-md-6">
-            <button mat-button color="accent" class="w-100" type="button" [mat-dialog-close]="false"  cdkFocusInitial>Cancelar</button>
+            
+            <button mat-button color="accent" class="w-100" type="button" [mat-dialog-close]="false"  cdkFocusInitial>
+                @if(!data.readonly){
+                    Cancelar
+                }@else{
+                    Cerrar
+                }
+                
+            </button>
           </div>
           <div class="col-md-6">
             @if (formState.isLoading) {
                 <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
             }@else {
-                <button mat-flat-button color="primary" class="w-100" [disabled]="form.invalid || form.disabled" type="button" (click)="save()" >
-                    {{data.id ? 'Actualizar contacto' : 'Crear contacto'}}
-                </button>
+
+                @if(!data.readonly){
+                    <button mat-flat-button color="primary" class="w-100" [disabled]="form.invalid || form.disabled" type="button" (click)="save()" >
+                        {{data.id ? 'Actualizar contacto' : 'Crear contacto'}}
+                    </button>
+                }
+                
+               
             }
           </div>
         </div>
