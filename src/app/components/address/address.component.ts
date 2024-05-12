@@ -1,22 +1,21 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { ContactService } from '../../services/contact.service';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AppService } from '../../services/app.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import {MatTabsModule} from '@angular/material/tabs';
-import { Contact } from '../../interfaces/global.interface';
-import { AddressComponent } from '../address/address.component';
-
+import { AddressService } from '../../services/address.service';
+import { AppService } from '../../services/app.service';
+import { Address } from '../../interfaces/global.interface';
 
 
 export interface DialogData {
   id: number;
+  contact_id: number;
 }
+
 @Component({
-  selector: 'app-contact',
+  selector: 'app-address',
   standalone: true,
   imports: [
     MatDialogModule,
@@ -24,44 +23,49 @@ export interface DialogData {
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
-    MatTabsModule
+    MatButtonModule
   ],
-  templateUrl: './contact.component.html',
-  styleUrl: './contact.component.scss'
+  templateUrl: './address.component.html',
+  styleUrl: './address.component.scss'
 })
-export class ContactComponent implements OnInit{
+export class AddressComponent {
+
   dialog = inject(MatDialog);
-  contactService = inject(ContactService);
+  addressService = inject(AddressService);
   appService = inject(AppService);
   fb = inject(FormBuilder);
-  dialogRef = inject(MatDialogRef<ContactComponent>);
+  dialogRef = inject(MatDialogRef<AddressComponent>);
   data: DialogData = inject(MAT_DIALOG_DATA);
   form: FormGroup = this.fb.group({
     id: [this.data.id ? this.data.id : null],
-    fullname: [null, [Validators.required]]
+    contact_id: [this.data.contact_id, [Validators.required]],
+    address: [null, [Validators.required]],
+    city: [null, [Validators.required]],
+    country: [null, [Validators.required]],
+    zip: [null, [Validators.required]],
   });
-
-  contact: Contact | null = null; 
 
   formState = {
     isLoading: false
   }
 
   ngOnInit(): void {
-    this.loadContactInfo();
+    this.loadAddressInfo();
+  }
+
+  close(){
+    this.dialogRef.close(false);
   }
 
   save(){
     this.form.disable();
     this.formState.isLoading = true;
-    this.contactService.save(this.form.value).subscribe({
+    this.addressService.save(this.form.value).subscribe({
       next: (response) => {
         if(response.status){
           this.formState.isLoading = false;
           this.appService.openToast(response.message, 'Cerrar');
-          this.data.id = response.contact.id;
-          this.loadContactInfo();
+          this.dialogRef.close(response.addresses);
         }else{
           this.formState.isLoading = false;
           this.form.enable();
@@ -77,22 +81,20 @@ export class ContactComponent implements OnInit{
     });
   }
 
-  close(){
-    this.dialogRef.close(false);
-  }
-
-
-  loadContactInfo(){
+  loadAddressInfo(){
     if(this.data.id){
       this.form.disable();
       this.formState.isLoading = true;
-      this.contactService.getOneById(this.data.id).subscribe({
+      this.addressService.getOneById(this.data.id).subscribe({
         next: (response) => {
           if(response.status){
-            const contact = response.contact;
-            this.contact = contact;
-            this.form.get('id')?.setValue(contact.id);
-            this.form.get('fullname')?.setValue(contact.fullname);
+            const address: Address = response.address;
+            this.form.get('id')?.setValue(address.id);
+            this.form.get('contact_id')?.setValue(address.contact_id);
+            this.form.get('address')?.setValue(address.address);
+            this.form.get('city')?.setValue(address.city);
+            this.form.get('zip')?.setValue(address.zip);
+            this.form.get('country')?.setValue(address.country);
             this.form.enable();
             this.formState.isLoading = false;
           }else{
@@ -110,39 +112,9 @@ export class ContactComponent implements OnInit{
           this.dialogRef.close(false);
         }
       });
+
     }
   }
 
 
-  //FACADES PARA CREAR O EDITAR UN DIRECCION
-  editAddress(id: number){
-    this.openAddress(id);
-  }
-
-  createAddress(){
-    this.openAddress();
-  }
-
-  //ABRIR EMERGENTE DE DIRECCION
-  openAddress(id: number = 0): void {
-    const contactDialogRef = this.dialog.open(AddressComponent, {
-      panelClass: ['col-md-12'],
-      data: {
-        id: id,
-        contact_id: this.data.id
-      }
-    });
-
-    contactDialogRef.afterClosed().subscribe(result => {
-      if(result){
-        console.log(result);
-        if(this.contact){
-          this.contact.addresses = result
-        }else{
-          console.log('Undeifnde contact');
-          
-        }
-      }
-    });
-  }
 }

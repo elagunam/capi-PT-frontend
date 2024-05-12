@@ -15,7 +15,12 @@
                 <div class="col-md-12">
                     <mat-tab-group>
                         <mat-tab label="Direcciones">
-                            <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-md-4 offset-md-8">
+                                    <button mat-flat-button class="w-100" (click)="createAddress()" color="primary">Agregar dirección</button>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
                                 <div class="col-md-12 table-responsive">
                                     <table class="table table-striped table-bordered table-hover">
                                         <thead>

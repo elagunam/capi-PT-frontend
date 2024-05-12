@@ -1,0 +1,55 @@
+<h2 class="text-primary fw-bold fs-4" mat-dialog-title>{{data.id ? 'Editar contacto' : 'Crear contacto'}}</h2>
+<form #contForm="ngForm" [formGroup]="form" (ngSubmit)="save()">
+    <mat-dialog-content>
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>Dirección</mat-label>
+                    <input type="text" formControlName="address" matInput placeholder="Dirección" >
+                    <mat-hint>Ingrese una Dirección</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>Ciudad</mat-label>
+                    <input type="text" formControlName="city" matInput placeholder="Ciudad" >
+                    <mat-hint>Ingrese un Ciudad</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>Código postal</mat-label>
+                    <input type="text" formControlName="zip" maxlength="5" matInput placeholder="Código postal" >
+                    <mat-hint>Ingrese un Código postal</mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="col-md-6">
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>Pais</mat-label>
+                    <input type="text" formControlName="country" matInput placeholder="Pais" >
+                    <mat-hint>Ingrese un Pais</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="mat-dialog-actions">
+        <div class="row w-100">
+          <div class="col-md-6">
+            <button mat-button color="accent" class="w-100" type="button" [mat-dialog-close]="false"  cdkFocusInitial>Cancelar</button>
+          </div>
+          <div class="col-md-6">
+            @if (formState.isLoading) {
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            }@else {
+                <button mat-flat-button color="primary" class="w-100" [disabled]="form.invalid || form.disabled" type="button" (click)="save()" >
+                    {{data.id ? 'Actualizar dirección' : 'Crear dirección'}}
+                </button>
+            }
+          </div>
+        </div>
+      </mat-dialog-actions>
+</form>
