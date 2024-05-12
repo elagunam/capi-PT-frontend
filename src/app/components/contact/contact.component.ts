@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
+import { Contact } from '../../interfaces/global.interface';
 
 
 
@@ -39,6 +40,8 @@ export class ContactComponent implements OnInit{
     id: [this.data.id ? this.data.id : null],
     fullname: [null, [Validators.required]]
   });
+
+  contact: Contact | null = null; 
 
   formState = {
     isLoading: false
@@ -86,6 +89,7 @@ export class ContactComponent implements OnInit{
         next: (response) => {
           if(response.status){
             const contact = response.contact;
+            this.contact = contact;
             this.form.get('id')?.setValue(contact.id);
             this.form.get('fullname')?.setValue(contact.fullname);
             this.form.enable();
