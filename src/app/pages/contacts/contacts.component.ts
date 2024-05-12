@@ -7,6 +7,8 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { ContactComponent } from '../../components/contact/contact.component';
 import {MatIconModule} from '@angular/material/icon';
+import { ConfirmComponent } from '../../components/confirm/confirm.component';
+import { AppService } from '../../services/app.service';
 
 
 
@@ -38,6 +40,7 @@ interface Contact {
 export class ContactsComponent implements OnInit {
 
   contactService = inject(ContactService);
+  appService = inject(AppService);
   public dialog = inject(MatDialog);
 
   contacts: Contact[] = [];
@@ -144,6 +147,45 @@ export class ContactsComponent implements OnInit {
     contactDialogRef.afterClosed().subscribe(result => {
       if(result){
         this.loadContacts();
+      }
+    });
+  }
+
+
+
+  deleteContactConfirm(contact: Contact){
+
+    const contactDialogRef = this.dialog.open(ConfirmComponent, {
+      panelClass: ['col-md-12'],
+      data: {
+        title: 'Borrar contacto',
+        text: `¿Desea borrar a ${contact.fullname}?`,
+        confirm: 'Eliminar',
+        cancel: 'Cancelar',
+      }
+    });
+
+    contactDialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.deleteContact(contact.id);
+      }
+    });
+  }
+
+
+  deleteContact(id: number){
+    this.contactService.delete(id).subscribe({
+      next: (response) => {
+        if(response.status){
+          this.appService.openToast(response.message, 'Cerrar');
+          this.loadContacts();
+        }else{
+          this.appService.openAlert('Atención', 'text-danger', response.message, 'Cerrar', 'text-danger', 'btn-danger text-light');
+        }
+      },
+      error: (error) => {
+        console.log(error);
+        this.appService.openAlert('Error', 'text-danger', 'No se pudo procesar su petición en este momento, intente más tarde', 'Cerrar', 'text-danger', 'btn-danger text-light');
       }
     });
   }

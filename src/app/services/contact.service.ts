@@ -31,5 +31,9 @@ export class ContactService {
   save(body: any): Observable<any>{
     return this.http.post(environment.api_url + 'contacts', body);
   }
+
+  delete(id: number): Observable<any>{
+    return this.http.delete(environment.api_url + 'contacts/'+id);
+  }
   
 }

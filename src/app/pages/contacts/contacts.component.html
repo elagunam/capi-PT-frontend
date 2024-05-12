@@ -107,6 +107,9 @@
                           <button mat-icon-button color="primary" (click)="edit(contact.id)">
                             <mat-icon>edit</mat-icon>
                           </button>
+                          <button type="button" mat-icon-button color="warn" (click)="deleteContactConfirm(contact)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
                         </td>
                       </tr>
                     }
