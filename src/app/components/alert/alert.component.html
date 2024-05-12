@@ -1,1 +1,7 @@
-<p>alert works!</p>
+<h2 mat-dialog-title ngClass="{{data.title_color}}">{{data.title}}</h2>
+<mat-dialog-content>
+  <p ngClass="{{data.text_color}}">{{data.text}}</p>
+</mat-dialog-content>
+<mat-dialog-actions class="mat-dialog-actions">
+  <button mat-button color="primary" type="button" [mat-dialog-close]="true" cdkFocusInitial>{{data.confirm}}</button>
+</mat-dialog-actions>

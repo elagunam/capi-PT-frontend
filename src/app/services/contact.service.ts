@@ -23,4 +23,13 @@ export class ContactService {
     });
     return this.http.get(environment.api_url+'contacts', {params});
   }
+
+  getOneById(id: number): Observable<any>{
+    return this.http.get(environment.api_url+'contacts/'+id);
+  }
+
+  save(body: any): Observable<any>{
+    return this.http.post(environment.api_url + 'contacts', body);
+  }
+  
 }

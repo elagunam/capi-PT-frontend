@@ -1,1 +1,127 @@
-<p>contact works!</p>
+<h2 class="text-primary fw-bold fs-4" mat-dialog-title>{{data.id ? 'Editar contacto' : 'Crear contacto'}}</h2>
+<form #contForm="ngForm" [formGroup]="form" (ngSubmit)="save()">
+    <mat-dialog-content>
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>Nombre completo</mat-label>
+                    <input type="text" formControlName="fullname" matInput placeholder="Nombre" >
+                    <mat-hint>Ingrese un nombre</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions class="mat-dialog-actions">
+        <div class="row w-100">
+          <div class="col-md-6">
+            <button mat-button color="accent" class="w-100" type="button" [mat-dialog-close]="false"  cdkFocusInitial>Cancelar</button>
+          </div>
+          <div class="col-md-6">
+            @if (formState.isLoading) {
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            }@else {
+                <button mat-flat-button color="primary" class="w-100" [disabled]="form.invalid || form.disabled" type="button" (click)="save()" >
+                    {{data.id ? 'Actualizar contacto' : 'Crear contacto'}}
+                </button>
+            }
+          </div>
+        </div>
+      </mat-dialog-actions>
+</form>
+
+<!-- 
+
+<mat-dialog-content>
+  <form #loginForm="ngForm" [formGroup]="form" (ngSubmit)="save()">
+    
+    <div class="row">
+      <div class="col-md-12">
+        <mat-form-field appearance="outline" class="col-12">
+          <mat-label>Descripción</mat-label>
+          <input type="text" formControlName="description" matInput placeholder="Descripción" >
+      </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <mat-form-field appearance="outline" class="col-12">
+          <mat-label>Puntos requeridos para desbloquear</mat-label>
+          <input type="text" formControlName="required_points" matInput placeholder="Puntos requeridos para desbloquear" >
+      </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="col-12">
+          <mat-label>Orden</mat-label>
+          <input type="text" formControlName="order" matInput placeholder="Orden" >
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="col-12">
+          <mat-label>Versión mínima requerida en la app</mat-label>
+          <input type="text" formControlName="min_app_version" matInput placeholder="Orden" >
+        </mat-form-field>
+      </div>
+
+
+
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <mat-slide-toggle formControlName="special">¿Categoría especial?</mat-slide-toggle>
+      </div>
+      <div class="col-md-6">
+        <mat-slide-toggle formControlName="is_locked">¿Bloqueada?</mat-slide-toggle>
+      </div>
+    </div>
+    <div class="row mb-3" *ngIf="data.id">
+      <div class="col-md-12 table-responsive">
+        <div class="row mb-2 mt-2">
+          <div class="col-md-4 offset-md-8">
+            <button mat-flat-button class="w-100" type="button" (click)="create()" color="primary">Nueva</button>
+          </div>
+        </div>
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">No.</th>
+              <th scope="col">CODIGO</th>
+              <th scope="col">Valor requerido</th>
+              <th scope="col">Título</th>
+              <th scope="col">Descripción</th>
+              <th scope="col">Opciones</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="tasksState.loading">
+            <tr>
+              <td colspan="6">Cargando...</td>
+            </tr>
+          </tbody>
+
+          <tbody *ngIf="!tasksState.loading && tasksState.is_error">
+            <tr>
+              <td colspan="6">{{tasksState.message}}.</td>
+            </tr>
+          </tbody>
+
+          <tbody *ngIf="!tasksState.loading && !tasksState.is_error ">
+            <tr *ngFor="let task of tasks; let i=index;">
+              <th scope="row">{{i+1}}</th>
+              <td>{{task.category.code}}</td>
+              <td>{{task.required_value}}</td>
+              <td>{{task.category.title}}</td>
+              <td>{{task.category.description}}</td>
+              <td>
+                <button mat-icon-button color="primary" (click)="edit(task.id)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+ -->
