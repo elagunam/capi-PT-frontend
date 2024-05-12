@@ -1,0 +1,43 @@
+<h2 class="text-primary fw-bold fs-4" mat-dialog-title>{{data.id ? 'Editar Teléfono' : 'Crear Teléfono'}}</h2>
+<form #contForm="ngForm" [formGroup]="form" (ngSubmit)="save()">
+    <mat-dialog-content>
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Tipo</mat-label>
+                    <mat-select formControlName="type">
+                      @for (type of phone_types; track $index) {
+                        <mat-option [value]="type.code">{{type.name}}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+            </div>
+            <div class="col-md-6">
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>Teléfono</mat-label>
+                    <input type="text" maxlength="10" formControlName="phone_number" matInput placeholder="Teléfono" >
+                    <mat-hint>Ingrese un Teléfono</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions class="mat-dialog-actions">
+        <div class="row w-100">
+          <div class="col-md-6">
+            <button mat-button color="accent" class="w-100" type="button" [mat-dialog-close]="false"  cdkFocusInitial>Cancelar</button>
+          </div>
+          <div class="col-md-6">
+            @if (formState.isLoading) {
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            }@else {
+                <button mat-flat-button color="primary" class="w-100" [disabled]="form.invalid || form.disabled" type="button" (click)="save()" >
+                    {{data.id ? 'Actualizar Teléfono' : 'Crear Teléfono'}}
+                </button>
+            }
+          </div>
+        </div>
+      </mat-dialog-actions>
+</form>
+
+

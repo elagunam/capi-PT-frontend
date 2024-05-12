@@ -28,8 +28,8 @@ export interface Phone {
     updated_at:    Date;
     deleted:       number;
     deleted_at:    null;
-    phone_number?: string;
-    type?:         string;
+    phone_number: string;
+    type:         string;
 }
 
 export interface Contact {

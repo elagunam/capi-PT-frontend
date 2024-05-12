@@ -7,11 +7,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
-import { Address, Contact } from '../../interfaces/global.interface';
+import { Address, Contact, Phone } from '../../interfaces/global.interface';
 import { AddressComponent } from '../address/address.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ConfirmComponent } from '../confirm/confirm.component';
 import { AddressService } from '../../services/address.service';
+import { PhoneComponent } from '../phone/phone.component';
+import { PhoneService } from '../../services/phone.service';
 
 
 
@@ -39,6 +41,7 @@ export class ContactComponent implements OnInit{
   contactService = inject(ContactService);
   appService = inject(AppService);
   addressService = inject(AddressService);
+  phoneService = inject(PhoneService);
   fb = inject(FormBuilder);
   dialogRef = inject(MatDialogRef<ContactComponent>);
   data: DialogData = inject(MAT_DIALOG_DATA);
@@ -189,7 +192,72 @@ export class ContactComponent implements OnInit{
         this.appService.openAlert('Error', 'text-danger', 'No se pudo procesar su petición en este momento, intente más tarde', 'Cerrar', 'text-danger', 'btn-danger text-light');
       }
     });
-    
+  }
 
+  //FACADES PARA CREAR O EDITAR UN TELEFONO
+  editPhone(id: number){
+    this.openPhone(id);
+  }
+
+  createPhone(){
+    this.openPhone();
+  }
+
+  //ABRIR EMERGENTE DE TELEFONO
+  openPhone(id: number = 0): void {
+    const contactDialogRef = this.dialog.open(PhoneComponent, {
+      panelClass: ['col-md-12'],
+      data: {
+        id: id,
+        contact_id: this.data.id
+      }
+    });
+
+    contactDialogRef.afterClosed().subscribe(result => {
+      if(result){
+        console.log(result);
+        if(this.contact){
+          this.contact.phones = result
+        }
+      }
+    });
+  }
+
+  deletePhoneConfirm(phone: Phone){
+
+    const contactDialogRef = this.dialog.open(ConfirmComponent, {
+      panelClass: ['col-md-12'],
+      data: {
+        title: 'Borrar Teléfono de contacto',
+        text: `¿Desea borrar el Teléfono ${phone.phone_number}?`,
+        confirm: 'Eliminar',
+        cancel: 'Cancelar',
+      }
+    });
+
+    contactDialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.deletePhone(phone.id);
+      }
+    });
+  }
+
+  deletePhone(id: number){
+    this.phoneService.delete(id).subscribe({
+      next: (response) => {
+        if(response.status){
+          this.appService.openToast(response.message, 'Cerrar');
+          if(this.contact){
+            this.contact.phones = response.phones;
+          }
+        }else{
+          this.appService.openAlert('Atención', 'text-danger', response.message, 'Cerrar', 'text-danger', 'btn-danger text-light');
+        }
+      },
+      error: (error) => {
+        console.log(error);
+        this.appService.openAlert('Error', 'text-danger', 'No se pudo procesar su petición en este momento, intente más tarde', 'Cerrar', 'text-danger', 'btn-danger text-light');
+      }
+    });
   }
 }
