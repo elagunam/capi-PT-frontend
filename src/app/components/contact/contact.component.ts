@@ -6,6 +6,8 @@ import { AppService } from '../../services/app.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import {MatTabsModule} from '@angular/material/tabs';
+
 
 
 export interface DialogData {
@@ -20,7 +22,8 @@ export interface DialogData {
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTabsModule
   ],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
