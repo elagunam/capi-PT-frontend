@@ -1,0 +1,33 @@
+<h2 class="text-primary fw-bold fs-4" mat-dialog-title>{{data.id ? 'Editar email' : 'Agregar email'}}</h2>
+<form #contForm="ngForm" [formGroup]="form" (ngSubmit)="save()">
+    <mat-dialog-content>
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <mat-form-field appearance="outline" class="col-12">
+                    <mat-label>Email</mat-label>
+                    <input type="email" formControlName="email" matInput placeholder="Email" >
+                    <mat-hint>Ingrese un Email</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions class="mat-dialog-actions">
+        <div class="row w-100">
+          <div class="col-md-6">
+            <button mat-button color="accent" class="w-100" type="button" [mat-dialog-close]="false"  cdkFocusInitial>Cancelar</button>
+          </div>
+          <div class="col-md-6">
+            @if (formState.isLoading) {
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            }@else {
+                <button mat-flat-button color="primary" class="w-100" [disabled]="form.invalid || form.disabled" type="button" (click)="save()" >
+                    {{data.id ? 'Actualizar email' : 'Agregar email'}}
+                </button>
+            }
+          </div>
+        </div>
+      </mat-dialog-actions>
+</form>
+
+

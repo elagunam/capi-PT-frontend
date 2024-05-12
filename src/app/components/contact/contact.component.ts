@@ -7,13 +7,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
-import { Address, Contact, Phone } from '../../interfaces/global.interface';
+import { Address, Contact, Email, Phone } from '../../interfaces/global.interface';
 import { AddressComponent } from '../address/address.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ConfirmComponent } from '../confirm/confirm.component';
 import { AddressService } from '../../services/address.service';
 import { PhoneComponent } from '../phone/phone.component';
 import { PhoneService } from '../../services/phone.service';
+import { EmailComponent } from '../email/email.component';
+import { EmailService } from '../../services/email.service';
 
 
 
@@ -42,6 +44,7 @@ export class ContactComponent implements OnInit{
   appService = inject(AppService);
   addressService = inject(AddressService);
   phoneService = inject(PhoneService);
+  emailService = inject(EmailService);
   fb = inject(FormBuilder);
   dialogRef = inject(MatDialogRef<ContactComponent>);
   data: DialogData = inject(MAT_DIALOG_DATA);
@@ -249,6 +252,73 @@ export class ContactComponent implements OnInit{
           this.appService.openToast(response.message, 'Cerrar');
           if(this.contact){
             this.contact.phones = response.phones;
+          }
+        }else{
+          this.appService.openAlert('Atención', 'text-danger', response.message, 'Cerrar', 'text-danger', 'btn-danger text-light');
+        }
+      },
+      error: (error) => {
+        console.log(error);
+        this.appService.openAlert('Error', 'text-danger', 'No se pudo procesar su petición en este momento, intente más tarde', 'Cerrar', 'text-danger', 'btn-danger text-light');
+      }
+    });
+  }
+
+  //FACADES PARA CREAR O EDITAR UN email
+  editEmail(id: number){
+    this.openEmail(id);
+  }
+
+  createEmail(){
+    this.openEmail();
+  }
+
+  //ABRIR EMERGENTE DE email
+  openEmail(id: number = 0): void {
+    const contactDialogRef = this.dialog.open(EmailComponent, {
+      panelClass: ['col-md-12'],
+      data: {
+        id: id,
+        contact_id: this.data.id
+      }
+    });
+
+    contactDialogRef.afterClosed().subscribe(result => {
+      if(result){
+        console.log(result);
+        if(this.contact){
+          this.contact.emails = result
+        }
+      }
+    });
+  }
+
+  deleteEmailConfirm(email: Email){
+
+    const contactDialogRef = this.dialog.open(ConfirmComponent, {
+      panelClass: ['col-md-12'],
+      data: {
+        title: 'Borrar email de contacto',
+        text: `¿Desea borrar el email ${email.email}?`,
+        confirm: 'Eliminar',
+        cancel: 'Cancelar',
+      }
+    });
+
+    contactDialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.deleteEmail(email.id);
+      }
+    });
+  }
+
+  deleteEmail(id: number){
+    this.emailService.delete(id).subscribe({
+      next: (response) => {
+        if(response.status){
+          this.appService.openToast(response.message, 'Cerrar');
+          if(this.contact){
+            this.contact.emails = response.emails;
           }
         }else{
           this.appService.openAlert('Atención', 'text-danger', response.message, 'Cerrar', 'text-danger', 'btn-danger text-light');

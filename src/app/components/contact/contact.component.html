@@ -133,9 +133,70 @@
                             </div>
                             
                         </mat-tab>
-                        <!-- 
                         <mat-tab label="Emails">
+                            <div class="row mt-3">
+                                <div class="col-md-4 offset-md-8">
+                                    <button mat-flat-button class="w-100" type="button" (click)="createEmail()" color="primary">Agregar email</button>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12 table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr class="table-primary">
+                                              <th scope="col">Email</th>
+                                              <th scope="col">Opciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (contact && contact.emails) {
+                                                @for (email of contact.emails; track email.id) {
+                                                    <tr>
+                                                        <td>
+                                                            {{email.email}}
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" mat-icon-button color="primary" (click)="editEmail(email.id)">
+                                                                <mat-icon>edit</mat-icon>
+                                                            </button>
+                                                            <button type="button" mat-icon-button color="warn" (click)="deleteEmailConfirm(email)">
+                                                                <mat-icon>delete</mat-icon>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }@else {
+                                                <tr>
+                                                    <td colspan="5">
+                                                        No hay emails agregados
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </mat-tab>
+                        <!-- <mat-tab label="Emails">
                             
+                            <div class="row mt-3">
+                                <div class="col-md-12 table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr class="table-primary">
+                                              <th scope="col">Email</th>
+                                              <th scope="col">Opciones</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            
+                                            
+                                          </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </mat-tab> -->
                       </mat-tab-group>
                 </div>
