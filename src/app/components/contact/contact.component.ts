@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatTabsModule} from '@angular/material/tabs';
 import { Contact } from '../../interfaces/global.interface';
 import { AddressComponent } from '../address/address.component';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -25,7 +26,8 @@ export interface DialogData {
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatTabsModule
+    MatTabsModule,
+    MatIconModule
   ],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'

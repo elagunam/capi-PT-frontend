@@ -48,7 +48,11 @@
                                                         <td>
                                                             {{address.zip}}
                                                         </td>
-                                                        <td></td>
+                                                        <td>
+                                                            <button mat-icon-button color="primary" (click)="editAddress(address.id)">
+                                                                <mat-icon>edit</mat-icon>
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                                 }
                                             }@else {
