@@ -6,6 +6,8 @@ import {MatButtonModule} from '@angular/material/button';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { ContactComponent } from '../../components/contact/contact.component';
+import {MatIconModule} from '@angular/material/icon';
+
 
 
 
@@ -28,6 +30,7 @@ interface Contact {
     MatInputModule, 
     MatButtonModule,
     MatDialogModule,
+    MatIconModule
   ],
   templateUrl: './contacts.component.html',
   styleUrl: './contacts.component.scss'
